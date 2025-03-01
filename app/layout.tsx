@@ -8,7 +8,7 @@ import { Toaster } from "@/components/ui/toaster";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Aircall Phone",
+  title: "Speer Tech - AirCall Phone Challenge",
   description: "A Next.js clone of the Aircall Phone app",
 };
 
