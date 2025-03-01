@@ -15,6 +15,13 @@ export function groupActivitiesByDate(activities: Activity[]) {
     grouped[dateKey].push(activity);
   });
 
+  Object.keys(grouped).forEach((dateKey) => {
+    grouped[dateKey].sort(
+      (a, b) =>
+        new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+    );
+  });
+
   return grouped;
 }
 
