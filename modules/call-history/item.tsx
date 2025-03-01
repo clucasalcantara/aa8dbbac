@@ -181,11 +181,28 @@ const CallHistoryItem: React.FC<CallHistoryItemProps> = ({
         activity={activity}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onArchiveToggle={() => {
-          if (activity.is_archived) {
-            onArchive(activity.id, true);
-          } else {
-            onArchive(activity.id, false);
+        onArchiveToggle={async () => {
+          try {
+            let res = {
+              success: false,
+            };
+
+            setIsLoading(true);
+            if (activity.is_archived) {
+              res = await onArchive(activity.id, true);
+              window.location.reload();
+            } else {
+              res = await onArchive(activity.id, false);
+              setActivities(activities.filter((a) => a.id !== activity.id));
+            }
+
+            if (!res.success) {
+              throw new Error("Failed to archive call");
+            }
+          } catch (error) {
+            console.error("Error archiving call:", error);
+          } finally {
+            setIsLoading(false);
           }
         }}
       />
