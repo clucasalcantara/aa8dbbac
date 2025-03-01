@@ -27,8 +27,11 @@ export function groupActivitiesByDate(activities: Activity[]) {
 
 export const formatPhoneNumber = (number: string) => {
   if (!number) return "";
-  return number.replace(
-    /(\d{2})(\d{1})(\d{2})(\d{2})(\d{2})(\d{2})/,
-    "+$1 $2 $3 $4 $5 $6"
-  );
+
+  return number
+    .toString()
+    .replace(
+      /(\d{2})(\d{1})(\d{2})(\d{2})(\d{2})(\d{2})/,
+      "+$1 $2 $3 $4 $5 $6"
+    );
 };

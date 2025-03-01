@@ -7,18 +7,11 @@ import type React from "react";
 import { format } from "date-fns";
 import { type Activity } from "@/app/actions";
 import { formatPhoneNumber } from "./utils";
+import { CallDetailsModal } from "@/components/call-details-modal";
 
 interface CallHistoryItemProps {
-  activity: {
-    id: string;
-    created_at: string;
-    direction: string;
-    from: string;
-    to: string;
-    via: string;
-    call_type: string;
-  };
-  onArchive: (id: string) => Promise<{ success: boolean }>;
+  activity: Activity;
+  onArchive: (id: string, override?: boolean) => Promise<{ success: boolean }>;
   setActivities: (activities: Activity[]) => void;
   activities: Activity[];
 }
@@ -29,6 +22,7 @@ const CallHistoryItem: React.FC<CallHistoryItemProps> = ({
   setActivities,
   activities,
 }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [slideOffset, setSlideOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -95,6 +89,12 @@ const CallHistoryItem: React.FC<CallHistoryItemProps> = ({
     }
   };
 
+  const handleClick = () => {
+    if (!isDragging && slideOffset === 0) {
+      setIsModalOpen(true);
+    }
+  };
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (itemRef.current && !itemRef.current.contains(event.target as Node)) {
@@ -150,6 +150,7 @@ const CallHistoryItem: React.FC<CallHistoryItemProps> = ({
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseLeave}
+        onClick={handleClick}
       >
         <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center">
           <Phone
@@ -176,6 +177,18 @@ const CallHistoryItem: React.FC<CallHistoryItemProps> = ({
         </div>
         <div className="text-sm text-gray-400">{formattedTime}</div>
       </div>
+      <CallDetailsModal
+        activity={activity}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onArchiveToggle={() => {
+          if (activity.is_archived) {
+            onArchive(activity.id, true);
+          } else {
+            onArchive(activity.id, false);
+          }
+        }}
+      />
     </div>
   );
 };

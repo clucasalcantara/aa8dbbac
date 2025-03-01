@@ -70,7 +70,7 @@ export async function resetActivities() {
   }
 }
 
-export async function archiveCall(id: string) {
+export async function archiveCall(id: string, override?: boolean) {
   try {
     console.log("Archiving call:", id);
     const res = await fetch(
@@ -80,7 +80,7 @@ export async function archiveCall(id: string) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ is_archived: true }),
+        body: JSON.stringify({ is_archived: override ? !override : true }),
       }
     );
 
