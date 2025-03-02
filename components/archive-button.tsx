@@ -9,8 +9,10 @@ import { useToast } from "@/hooks/use-toast";
 
 export default function ArchiveButton({
   activities,
+  activeTab,
 }: {
   activities: Activity[];
+  activeTab: string;
 }) {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -50,7 +52,7 @@ export default function ArchiveButton({
       variant="outline"
       className="w-full flex items-center gap-2 h-12 justify-start text-gray-500"
       onClick={handleArchive}
-      disabled={isLoading}
+      disabled={isLoading || activeTab === "archived"}
     >
       <Archive className="w-5 h-5" />
       <span>{isLoading ? "Archiving..." : "Archive all calls"}</span>

@@ -78,7 +78,7 @@ export function CallHistoryContent({ activeTab }: { activeTab: string }) {
   return (
     <div className="divide-y">
       <div className="relative p-4 border-b">
-        <ArchiveButton activities={activities} />
+        <ArchiveButton activities={activities} activeTab={activeTab} />
         <ResetButton />
       </div>
       {Object.entries(groupedActivities).map(([date, dateActivities]) => (
