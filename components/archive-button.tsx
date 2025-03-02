@@ -1,12 +1,17 @@
 "use client";
 
+import { Activity, archiveAllCalls } from "@/app/actions";
+
 import { Archive } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { archiveAllCalls } from "@/app/actions";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
-export default function ArchiveButton() {
+export default function ArchiveButton({
+  activities,
+}: {
+  activities: Activity[];
+}) {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
@@ -14,7 +19,7 @@ export default function ArchiveButton() {
     setIsLoading(true);
 
     try {
-      const result = await archiveAllCalls();
+      const result = await archiveAllCalls(activities);
 
       if (result.success) {
         toast({

@@ -12,36 +12,21 @@ export type Activity = {
   call_type: string;
 };
 
-export async function archiveAllCalls() {
+export async function archiveAllCalls(activities: Activity[]) {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/activities`, {
-      method: "GET",
-      cache: "no-store",
-    });
-
-    if (!res.ok) {
-      throw new Error("Failed to fetch activities");
-    }
-
-    const data = await res.json();
-    const activities: Activity[] = data.activities || [];
-
     await Promise.all(
-      activities
-        .filter((activity) => !activity.is_archived)
-        .map(
-          async (activity) =>
-            await fetch(
-              `${process.env.NEXT_PUBLIC_API_URL}/activities/${activity.id}`,
-              {
-                method: "PATCH",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ is_archived: true }),
-              }
-            )
-        )
+      activities.map(async (activity) => {
+        await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/activities/${activity.id}`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ is_archived: true }),
+          }
+        );
+      })
     );
 
     return { success: true };

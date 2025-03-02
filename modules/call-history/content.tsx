@@ -1,10 +1,12 @@
 "use client";
 
 import { Activity, archiveCall, fetchActivities } from "@/app/actions";
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
+import ArchiveButton from "@/components/archive-button";
 import CallHistoryItem from "./item";
 import { CallHistoryLoading } from "./loading";
+import ResetButton from "@/components/reset-button";
 import { groupActivitiesByDate } from "./utils";
 
 export function CallHistoryContent({ activeTab }: { activeTab: string }) {
@@ -75,6 +77,10 @@ export function CallHistoryContent({ activeTab }: { activeTab: string }) {
 
   return (
     <div className="divide-y">
+      <div className="relative p-4 border-b">
+        <ArchiveButton activities={activities} />
+        <ResetButton />
+      </div>
       {Object.entries(groupedActivities).map(([date, dateActivities]) => (
         <div key={date} className="py-4">
           <div className="text-xs text-center text-gray-400 mb-2">{date}</div>
