@@ -36,6 +36,7 @@ export default function ArchiveButton() {
       });
     } finally {
       setIsLoading(false);
+      window.location.reload();
     }
   };
 

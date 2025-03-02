@@ -29,17 +29,18 @@ export async function archiveAllCalls() {
     await Promise.all(
       activities
         .filter((activity) => !activity.is_archived)
-        .map((activity) =>
-          fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/activities/${activity.id}`,
-            {
-              method: "PATCH",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ is_archived: true }),
-            }
-          )
+        .map(
+          async (activity) =>
+            await fetch(
+              `${process.env.NEXT_PUBLIC_API_URL}/activities/${activity.id}`,
+              {
+                method: "PATCH",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ is_archived: true }),
+              }
+            )
         )
     );
 
