@@ -1,7 +1,5 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-
 export type Activity = {
   id: string;
   created_at: string;
